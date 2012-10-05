@@ -5,7 +5,9 @@ import java.util.TreeSet;
 
 
 public class IntBoard {
-
+	final int ROW = 4;
+	final int COL = 4;
+	
 	public IntBoard(){
 		
 	}
@@ -14,11 +16,11 @@ public class IntBoard {
 		
 	}
 	
-	public void calcTarget(int start, int steps){
+	public void calcTargets(int start, int steps){
 		
 	}
 	
-	public Set getTargets(){
+	public TreeSet getTargets(){
 		return new TreeSet();
 	}
 	
@@ -26,8 +28,8 @@ public class IntBoard {
 		return new LinkedList();
 	}
 	
-	public static int calcIndex(){
-		return 0;
+	public static int calcIndex(int row, int col){
+		return 4*row+col;
 	}
 
 }
