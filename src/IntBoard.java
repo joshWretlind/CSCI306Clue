@@ -24,12 +24,12 @@ public class IntBoard {
 		return new TreeSet();
 	}
 	
-	public LinkedList getAdjList(){
+	public LinkedList getAdjList(int indx){
 		return new LinkedList();
 	}
 	
 	public static int calcIndex(int row, int col){
-		return 4*row+col;
+		return row*row+col;
 	}
 
 }
