@@ -20,9 +20,10 @@ public class IntBoardTests extends TestCase {
 	
 	public IntBoardTests(){
 		board = new IntBoard();
+		board.calcAdjacencies();
 	}
 	
-	//fail
+	//pass
 	@Test
 	public void testAdjacency_0(){
 		testList = board.getAdjList(0);
@@ -30,10 +31,9 @@ public class IntBoardTests extends TestCase {
 		Assert.assertTrue(testList.contains(1));
 		Assert.assertTrue(testList.contains(4));
 		Assert.assertTrue(testList.size() == 2);
-		
 	}
 	
-	//fail
+	//pass
 	@Test
 	public void testAdjacency_7(){
 		testList = board.getAdjList(7);
@@ -44,7 +44,8 @@ public class IntBoardTests extends TestCase {
 		Assert.assertTrue(testList.size() == 3);
 			
 	}
-	//fail
+	
+	//pass
 	@Test
 	public void testAdjacency_8(){
 		testList = board.getAdjList(8);
@@ -55,7 +56,7 @@ public class IntBoardTests extends TestCase {
 		Assert.assertTrue(testList.size() == 3);
 	}	
 	
-	//fail
+	//pass
 	@Test
 	public void testAdjacency_10(){
 		testList = board.getAdjList(10);
@@ -68,7 +69,7 @@ public class IntBoardTests extends TestCase {
 			
 	}
 	
-	//fail
+	//pass
 	@Test
 	public void testAdjacency_5(){
 		testList = board.getAdjList(5);
@@ -81,7 +82,7 @@ public class IntBoardTests extends TestCase {
 			
 	}
 	
-	//fail
+	//pass
 	@Test
 	public void testAdjacency_15(){
 		testList = board.getAdjList(15);
@@ -173,11 +174,11 @@ public class IntBoardTests extends TestCase {
 		
 	}
 	
-	//fail
+	//pass
 	@Test
 	public void testIndex(){
 		int actual = board.calcIndex(2, 3);
-		int expected = 0;
+		int expected = 11;
 		Assert.assertEquals(expected, actual);
 	}
 	
