@@ -1,11 +1,9 @@
 import java.util.LinkedList;
 import java.util.TreeSet;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 
 public class IntBoardTests extends TestCase {
@@ -97,7 +95,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets0_3()
 	{
-		board.calcTargets(0, 3);
+		board.calcTargets(0,0, 3);
 		targets= board.getTargets();
 		Assert.assertEquals(6, targets.size());
 		Assert.assertTrue(targets.contains(12));
@@ -112,7 +110,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets0_1()
 	{
-		board.calcTargets(0, 1);
+		board.calcTargets(0, 0, 1);
 		targets= board.getTargets();
 		Assert.assertEquals(2, targets.size());
 		Assert.assertTrue(targets.contains(1));
@@ -124,7 +122,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets1_2()
 	{
-		board.calcTargets(1, 2);
+		board.calcTargets(0, 1, 2);
 		targets= board.getTargets();
 		Assert.assertEquals(4, targets.size());
 		Assert.assertTrue(targets.contains(6));
@@ -138,7 +136,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets5_1()
 	{
-		board.calcTargets(5, 1);
+		board.calcTargets(1, 4, 1);
 		targets= board.getTargets();
 		Assert.assertEquals(4, targets.size());
 		Assert.assertTrue(targets.contains(6));
@@ -152,7 +150,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets13_1()
 	{
-		board.calcTargets(5, 1);
+		board.calcTargets(3,1, 1);
 		targets= board.getTargets();
 		Assert.assertEquals(3, targets.size());
 		Assert.assertTrue(targets.contains(9));
@@ -165,7 +163,7 @@ public class IntBoardTests extends TestCase {
 	@Test
 	public void testTargets11_1()
 	{
-		board.calcTargets(11, 1);
+		board.calcTargets(2,3, 1);
 		targets= board.getTargets();
 		Assert.assertEquals(3, targets.size());
 		Assert.assertTrue(targets.contains(7));
