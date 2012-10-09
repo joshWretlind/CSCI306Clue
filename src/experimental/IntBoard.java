@@ -26,8 +26,7 @@ public class IntBoard {
 
     public void calcAdjacencies() {
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (i != j) {
+            for (int j = 0; j < col; j++){
                     boolean top = false;
                     boolean bottom = false;
                     boolean right = false;
@@ -58,8 +57,6 @@ public class IntBoard {
                         adjList.add(4 * (j + 1) + i);
                     }
                     adj.put(4*j + i, adjList);
-                }
-
             }
         }
     }
