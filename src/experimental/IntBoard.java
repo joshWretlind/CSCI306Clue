@@ -16,8 +16,8 @@ public class IntBoard {
     private boolean visited[][];
 
     public IntBoard() {
-    visited = new boolean[row][col];
-    targets = new TreeSet<Integer>();
+        visited = new boolean[row][col];
+        targets = new TreeSet<Integer>();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 visited[i][j] = false;
@@ -28,61 +28,52 @@ public class IntBoard {
     public void calcAdjacencies() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                    boolean top = false;
-                    boolean bottom = false;
-                    boolean right = false;
-                    boolean left = false;
-                    if ((j + 1) == row) {
-                        right = true;
-                    }
-                    if ((j - 1) == -1) {
-                        left = true;
-                    }
-                    if (i - 1 == -1) {
-                        top = true;
-                    }
-                    if ((i + 1) == col) {
-                        bottom = true;
-                    }
-                    adjList = new LinkedList<Integer>();
-                    if (!right) {
-                        adjList.add(4 * i + j + 1);
-                    }
-                    if (!left) {
-                        adjList.add(4 * i + j - 1);
-                    }
-                    if (!top) {
-                        adjList.add(4 * (i - 1) + j);
-                    }
-                    if (!bottom) {
-                        adjList.add(4 * (i + 1) + j);
-                    }
-                    adj.put(4*i + j, adjList);
-
+                boolean top = false;
+                boolean bottom = false;
+                boolean right = false;
+                boolean left = false;
+                if ((j + 1) == row) {
+                    right = true;
+                }
+                if ((j - 1) == -1) {
+                    left = true;
+                }
+                if (i - 1 == -1) {
+                    top = true;
+                }
+                if ((i + 1) == col) {
+                    bottom = true;
+                }
+                adjList = new LinkedList<Integer>();
+                if (!right) {
+                    adjList.add(row * i + j + 1);
+                }
+                if (!left) {
+                    adjList.add(row * i + j - 1);
+                }
+                if (!top) {
+                    adjList.add(row * (i - 1) + j);
+                }
+                if (!bottom) {
+                    adjList.add(row * (i + 1) + j);
+                }
+                adj.put(4 * i + j, adjList);
             }
         }
     }
 
     public void calcTargets(int rowT, int colT, int steps) {
-    int temp = 0;
-    if (visited[rowT][colT] == false && steps==0){
-           targets.add(row*rowT+colT);
-           return;
-       	}
-         else {
-        	for (int k : getAdjList(row*colT+rowT)){
-        visited[rowT][colT] = true;
-        temp = rowT;
-        rowT = (int) Math.floor(k/row);
-        colT = k%row;
-        --steps;
-        calcTargets(rowT, colT, steps);
-
-        	
-        	} 
-         }
-
-         
+        if ((visited[rowT][colT] == false && steps == 0)) {
+            targets.add(row * rowT + colT);
+            return;
+        } else {
+            for (int k : getAdjList(row * rowT + colT)) {
+                visited[rowT][colT] = true;
+                if(!visited[(int)(k/row)][k%row]){
+                    calcTargets((int)(k/row), k%row, steps-1);
+                }
+            }
+        }
     }
 
     public TreeSet<Integer> getTargets() {
