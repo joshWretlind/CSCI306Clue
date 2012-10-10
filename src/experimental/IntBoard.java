@@ -88,11 +88,4 @@ public class IntBoard {
     public int calcIndex(int r, int c) {
         return row * r + c;
     }
-
-    public static void main(String[] args) {
-        IntBoard ib = new IntBoard();
-        ib.calcAdjacencies();
-        ib.calcTargets(0, 0, 2);
-        System.out.println();
-    }
 }

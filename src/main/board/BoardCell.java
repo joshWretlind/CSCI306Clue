@@ -2,8 +2,20 @@ package main.board;
 
 public abstract class BoardCell {
 	
-//	public boolan is
-	public boolean isDoor(){
+    int row;
+    int col;
+    
+	public boolean isWalkway(){
+        return false;
+    }
+    
+	public boolean isDoorway(){
 		return false;
 	}
+    
+    public boolean isRoom(){
+        return false;
+    }
+    
+    public abstract void draw();
 }
