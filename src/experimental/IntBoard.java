@@ -72,6 +72,7 @@ public class IntBoard {
                 if(!visited[(int)(k/row)][k%row]){
                     calcTargets((int)(k/row), k%row, steps-1);
                 }
+                visited[rowT][colT] = false;
             }
         }
     }
