@@ -9,7 +9,6 @@ public class RoomCell extends BoardCell{
 	private DoorDirection doorDirection;
 	char initial;
 	
-	@Overide
 	public boolean isRoom(){
 		return true;
 	}
