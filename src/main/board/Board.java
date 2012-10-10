@@ -16,7 +16,7 @@ public class Board {
         
     }
     
-    public void loadConfigFiles(String path){
+    public void loadConfigFiles(String path) throws BadConfigException{
         //Do stuff
     }
     
