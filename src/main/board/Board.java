@@ -388,7 +388,7 @@ public class Board {
 		//System.out.println(b.getRow(25, 23));
 		//System.out.println(b.cells.get(0).isDoorway());
 		b.calcAdjacencies();
-		System.out.println(b.getCellAt(4));
+		System.out.println(b.getCellAt(3));
 		//System.out.println(b.getCellAt(320));
 		//System.out.println(b.adj.get(b.getCellAt(46)).toString());
 
