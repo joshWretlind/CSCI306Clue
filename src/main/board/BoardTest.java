@@ -5,21 +5,19 @@ import main.board.Board;
 import main.board.RoomCell;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BoardTest  {
     public static Board board;
-    
-    @BeforeClass 
-    public static void onlyOnce() {
-    	board = new Board();
-    }
+    public final int ROW = 22;
+    private final int COL = 23;
     
     @Before
     public void beforeMethod() {
-        try{
-            board.loadConfigFiles("whatever the path is");
+    	board = new Board();
+    	try{
+            board.loadConfigFiles("work1.csv");
+            board.loadLegend("initials.csv");
         }catch(Exception e){
             Assert.fail(e.toString());
         } 
@@ -29,7 +27,7 @@ public class BoardTest  {
     public void testConfigLoading() {
          board = new Board();
         try{
-            board.loadConfigFiles("whatever the path is");
+            board.loadConfigFiles("work1.csv");
         }catch(Exception e){
             Assert.fail(e.toString());
         } 
@@ -37,26 +35,23 @@ public class BoardTest  {
     
     @Test
     public void testBoardSizes() {
-     
-        Assert.assertEquals(board.numRows, board.cells.size()/board.numColumns);
-        Assert.assertEquals(board.numColumns, board.cells.size()/board.numRows);
-        Assert.assertEquals(board.numColumns*board.numRows, board.cells.size());
+        Assert.assertEquals(ROW, board.cells.size()/board.getNumColumns());
+        Assert.assertEquals(COL, board.cells.size()/board.getNumRows());
     }
     
     @Test
     public void testCalcIndex() {
-        
         Assert.assertEquals(0, board.calcRoomIndex(0, 0));
         Assert.assertEquals(1, board.calcRoomIndex(0, 1));
-        Assert.assertEquals(4*board.numColumns + 2, board.calcRoomIndex(4,2));
-        Assert.assertEquals(board.numColumns, board.calcRoomIndex(0, board.numColumns));
+        Assert.assertEquals(4*COL + 2, board.calcRoomIndex(4,2));
+        Assert.assertEquals(COL, board.calcRoomIndex(0, board.getNumColumns()));
     }
     
     @Test
     public void testBoardCharMapping() { 
-        Assert.assertEquals(board.rooms.get("C"), "Conservatory");
-        Assert.assertEquals(board.rooms.get("K"), "Kitchen");
-        Assert.assertEquals(board.rooms.get("L"), "Library");
+        Assert.assertEquals("CONSERVATORY", board.rooms.get('C'));
+        Assert.assertEquals("KITCHEN", board.rooms.get('K'));
+        Assert.assertEquals("LIBRARY", board.rooms.get('L'));
     }
     
     @Test
@@ -71,10 +66,13 @@ public class BoardTest  {
     	int numDoors = 0;
     	int numOfCells = board.getNumColumns()*board.getNumRows();
     	Assert.assertEquals(506, numOfCells);
+    	
     	for (int c=0;c<numOfCells;c++){
-    		if(board.getCellAt(c).isDoorway())
+    		BoardCell cell = board.getCellAt(c);
+    		if(cell.isDoorway())
     			numDoors++;
     	}
+    	
     	Assert.assertEquals(17, numDoors);
     }
     
@@ -84,11 +82,11 @@ public class BoardTest  {
     	RoomCell r = board.getRoomCellAt(0, 0);
     	Assert.assertFalse(r.isDoorway());
     	//Right
-    	r = board.getRoomCellAt(4, 2);
+    	r = board.getRoomCellAt(4, 3);
     	Assert.assertTrue(r.isDoorway());
     	Assert.assertEquals(RoomCell.DoorDirection.RIGHT, r.getDoorDir());
     	//UP
-    	r = board.getRoomCellAt(15, 11);
+    	r = board.getRoomCellAt(14, 11);
     	Assert.assertTrue(r.isDoorway());
     	Assert.assertEquals(RoomCell.DoorDirection.UP, r.getDoorDir());
     	//Down

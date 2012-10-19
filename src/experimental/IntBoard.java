@@ -44,18 +44,20 @@ public class IntBoard {
                 if ((i + 1) == col) {
                     bottom = true;
                 }
+                
                 adjList = new LinkedList<Integer>();
+                
                 if (!right) {
-                    adjList.add(row * i + j + 1);
+                    adjList.add(col * i + j + 1);
                 }
                 if (!left) {
-                    adjList.add(row * i + j - 1);
+                    adjList.add(col * i + j - 1);
                 }
                 if (!top) {
-                    adjList.add(row * (i - 1) + j);
+                    adjList.add(col * (i - 1) + j);
                 }
                 if (!bottom) {
-                    adjList.add(row * (i + 1) + j);
+                    adjList.add(col * (i + 1) + j);
                 }
                 adj.put(4 * i + j, adjList);
             }

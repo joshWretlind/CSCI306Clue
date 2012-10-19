@@ -1,8 +1,12 @@
 package main.board;
 
 public class RoomCell extends BoardCell{
-
-    @Override
+	
+	public RoomCell(String cellChar) {
+		super(cellChar);
+	}
+    
+	@Override
     public void draw() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -17,5 +21,17 @@ public class RoomCell extends BoardCell{
     @Override
 	public boolean isRoom(){
 		return true;
+	}
+
+	public char getInitial() {
+		return this.initial;
+	}
+	
+	public DoorDirection getDoorDir() {
+		return this.doorDirection;
+	}
+	
+	public void setDoorDir(DoorDirection drDir) {
+		this.doorDirection = drDir;
 	}
 }
