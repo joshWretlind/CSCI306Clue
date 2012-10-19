@@ -49,7 +49,7 @@ public class Board {
 
 			while (scn.hasNextLine()) {
 				line = scn.nextLine();
-				numColumns = (line.length() + 1) / 2;
+				numColumns = line.split(",").size();
 				numRows++;
 				temp = "";
 				for (int indx = 0; indx < line.length(); indx++) {
