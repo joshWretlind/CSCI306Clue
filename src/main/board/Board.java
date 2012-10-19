@@ -49,7 +49,7 @@ public class Board {
 
 			while (scn.hasNextLine()) {
 				line = scn.nextLine();
-				numColumns = line.split(",").size();
+				numColumns = line.split(",").length;
 				numRows++;
 				temp = "";
 				for (int indx = 0; indx < line.length(); indx++) {
@@ -260,62 +260,23 @@ public class Board {
 						bottom = true;
 					}
 					
-					//left
-					if (i%numColumns != 0) {
-						if (getCellAt(i - 1).isDoorway()){
-							drWay = true;
-						}
-						else if (getCellAt(i - 1).isRoom()) {
-							room = true;
-						}
+					if (!left && (!getCellAt(i,j-1).isRoom() || getCellAt(i,j-1).isDoorway())){
+						adjList.add(numColumns * i + (j-1));
 					}
-					//right
-					if((i+1)%numColumns != 0){
-						if (getCellAt(i + 1).isDoorway()){
-							drWay = true;
-						}
-						else if (getCellAt(i + 1).isRoom()) {
-							room = true;
-						}
+					if (!right && (!getCellAt(i,j+1).isRoom() || getCellAt(i,j+1).isDoorway())){
+						adjList.add(numColumns * i + j + 1);
 					}
-					//top
-					if(j%numRows != 0){
-						if (getCellAt(j - 1).isDoorway()){
-							drWay = true;
-						}
-						else if (getCellAt(j - 1).isRoom()) {
-							room = true;
-						}
+					if (!top && (!getCellAt(i-1,j).isRoom() || getCellAt(i-1,j).isDoorway())){
+						adjList.add(numColumns * (i - 1) + j);
 					}
-					//down
-					if((j+1)%numRows != 0){
-						if (getCellAt(j + 1).isDoorway()){
-							drWay = true;
-						}
-						else if (getCellAt(j + 1).isRoom()) {
-							room = true;
-						}
-					}
-					
-					if (!room || drWay){
-						if (!right) {
-							adjList.add(numColumns * i + j + 1);
-						}
-						if (!left) {
-							adjList.add(numColumns * i + j - 1);
-						}
-						if (!top) {
-							adjList.add(numColumns * (i - 1) + j);
-						}
-						if (!bottom) {
-							adjList.add(numRows * (i + 1) + j);
-						}
+					if (!bottom && (!getCellAt(i+1,j).isRoom() || getCellAt(i+1,j).isDoorway())){
+						adjList.add(numColumns * (i+1) + j);
 					}
 				}
 
 				adj.put(getCellAt(numColumns * i + j), adjList);
 				//checking...
-				//System.out.println(adj.get(getCellAt(numColumns*i+j)));
+				System.out.println(numColumns * i + j+""+adj.get(getCellAt(numColumns*i+j)));
 				//System.out.println(bc.isRoom());
 			}
 		}
@@ -388,7 +349,12 @@ public class Board {
 		//System.out.println(b.getRow(25, 23));
 		//System.out.println(b.cells.get(0).isDoorway());
 		b.calcAdjacencies();
+		/*System.out.println(b.getCellAt(0));
+		System.out.println(b.getCellAt(1));
+		System.out.println(b.getCellAt(2));
 		System.out.println(b.getCellAt(3));
+		System.out.println(b.getCellAt(4));
+		System.out.println(b.getCellAt(5));*/
 		//System.out.println(b.getCellAt(320));
 		//System.out.println(b.adj.get(b.getCellAt(46)).toString());
 
