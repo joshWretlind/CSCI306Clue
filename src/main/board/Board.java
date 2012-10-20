@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,9 @@ public class Board {
 
 	ArrayList<BoardCell> cells;
 	Map<Character, String> rooms;
-	HashMap<BoardCell, List<Integer>> adj = new HashMap<BoardCell, List<Integer>>();
+	HashMap<BoardCell, List<Integer>> adj;
 	LinkedList<Integer> adjList;
-	TreeSet<BoardCell> targets;
+	Set<BoardCell> targets;
 	boolean visited[][];
 	int numRows;
 	int numColumns;
@@ -27,14 +28,9 @@ public class Board {
 	public Board() {
 		cells = new ArrayList<BoardCell>();
 		rooms = new HashMap<Character, String>();
-
-		targets = new TreeSet<BoardCell>();
-		visited = new boolean[numRows][numColumns];
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numColumns; j++) {
-				visited[i][j] = false;
-			}
-		}
+		adj = new HashMap<BoardCell, List<Integer>>();
+		
+		targets = new HashSet<BoardCell>();
 	}
 
 	// ---DONE---
@@ -122,7 +118,13 @@ public class Board {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
+		visited = new boolean[numRows][numColumns];
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				visited[i][j] = false;
+			}
+		}
 	}
 
 	// ---DONE---
@@ -216,34 +218,13 @@ public class Board {
 						}
 						
 					}
-					// ---not door cell
-					/*else {
-						drs = doorsOfRoom(numColumns * i +j);
-						System.out.println(numColumns*i+j + " " +drs.toString());
-						for (int k = 0; k < drs.size(); k++) {
-							rc = (RoomCell) getCellAt(drs.get(k));
-							if (rc.getDoorDir().equals(DoorDirection.UP)) {
-								adjList.add(numColumns * (i - 1) + j);
-							} else if (rc.getDoorDir().equals(DoorDirection.DOWN)) {
-								adjList.add(numColumns * (i + 1) + j);
-							} else if (rc.getDoorDir().equals(DoorDirection.RIGHT)) {
-								adjList.add(numColumns * i + j + 1);
-							} else if (rc.getDoorDir().equals(DoorDirection.LEFT)) {
-								adjList.add(numColumns * i + j - 1);
-							}
-						}
-						
-					}*/
 				} else if (bc.isWalkway()) {
 					//directions
 					boolean top = false;
 					boolean bottom = false;
 					boolean right = false;
 					boolean left = false;
-					//cell type
-					boolean room = false;
-					boolean drWay = false;
-					
+
 					if ((j + 1) == numColumns) {
 						right = true;
 					}
@@ -261,30 +242,59 @@ public class Board {
 					}
 					
 					if (!left && (!getCellAt(i,j-1).isRoom() || getCellAt(i,j-1).isDoorway())){
-						adjList.add(numColumns * i + (j-1));
+						if (getCellAt(i,j-1).isDoorway()) {
+							if (((RoomCell) (getCellAt(i,j-1))).getDoorDir().equals(DoorDirection.RIGHT) ) {
+								adjList.add(numColumns * i + (j-1));
+							}
+						}
+						else {
+							adjList.add(numColumns * i + (j-1));
+						}
+						
 					}
 					if (!right && (!getCellAt(i,j+1).isRoom() || getCellAt(i,j+1).isDoorway())){
-						adjList.add(numColumns * i + j + 1);
+						if (getCellAt(i,j+1).isDoorway()) {
+							if (((RoomCell) (getCellAt(i,j+1))).getDoorDir().equals(DoorDirection.LEFT) ) {
+								adjList.add(numColumns * i + (j+1));
+							}
+						}
+						else {
+							adjList.add(numColumns * i + (j+1));
+						}
 					}
 					if (!top && (!getCellAt(i-1,j).isRoom() || getCellAt(i-1,j).isDoorway())){
-						adjList.add(numColumns * (i - 1) + j);
+						if (getCellAt(i-1,j).isDoorway()) {
+							if (((RoomCell) (getCellAt(i-1,j))).getDoorDir().equals(DoorDirection.DOWN) ) {
+								adjList.add(numColumns * (i-1) + j);
+							}
+						}
+						else {
+							adjList.add(numColumns * (i-1) + j);
+						}
 					}
 					if (!bottom && (!getCellAt(i+1,j).isRoom() || getCellAt(i+1,j).isDoorway())){
-						adjList.add(numColumns * (i+1) + j);
+						if (getCellAt(i+1,j).isDoorway()) {
+							if (((RoomCell) (getCellAt(i+1,j))).getDoorDir().equals(DoorDirection.UP) ) {
+								adjList.add(numColumns * (i+1) + j);
+							}
+						}
+						else {
+							adjList.add(numColumns * (i+1) + j);
+						}
 					}
 				}
 
 				adj.put(getCellAt(numColumns * i + j), adjList);
 				//checking...
-				System.out.println(numColumns * i + j+""+adj.get(getCellAt(numColumns*i+j)));
-				//System.out.println(bc.isRoom());
+				//System.out.println(numColumns * i + j+""+adj.get(getCellAt(numColumns*i+j)));
+				//System.out.println(adj);
 			}
 		}
 	}
 
 	// ---List Of Adjacency---
-	public LinkedList<Integer> getAdjList(int indx) {
-		return (LinkedList<Integer>) adj.get(indx);
+	public LinkedList<Integer> getAdjList(BoardCell bc) {
+		return (LinkedList<Integer>) adj.get(bc);
 	}
 
 	// ---Calculate Targets---
@@ -293,16 +303,20 @@ public class Board {
 		int colT = this.getColumn(indx, numColumns);
 
 		if ((visited[rowT][colT] == false && steps == 0)) {
-			targets.add(getCellAt(numColumns * rowT + colT));
+			targets.add(getCellAt(rowT, colT));
 			return;
 		} else {
-			for (int k : getAdjList(numColumns * rowT + colT)) {
+			for (int k : adj.get(getCellAt(numColumns * rowT + colT))) {
 				visited[rowT][colT] = true;
 				if (!visited[(int) (k / numColumns)][k % numColumns]) {
+					if (getCellAt(k).isDoorway()){
+						targets.add(getCellAt(k));
+					}
 					calcTargets(k, steps - 1);
 				}
 				visited[rowT][colT] = false;
 			}
+			
 		}
 
 	}
@@ -333,7 +347,7 @@ public class Board {
 	// ......."Main" is: ONLY FOR TESTING AND DEBUGGING .~_~.
 	public static void main(String[] args) throws FileNotFoundException {
 		Board b = new Board();
-
+		
 		FileReader redr = new FileReader("work1.csv");
 		Scanner s = new Scanner(redr);
 		try {
@@ -349,6 +363,8 @@ public class Board {
 		//System.out.println(b.getRow(25, 23));
 		//System.out.println(b.cells.get(0).isDoorway());
 		b.calcAdjacencies();
+		LinkedList<Integer> testList = b.getAdjList(b.getCellAt(0));
+		System.out.println(testList);
 		/*System.out.println(b.getCellAt(0));
 		System.out.println(b.getCellAt(1));
 		System.out.println(b.getCellAt(2));
@@ -356,7 +372,8 @@ public class Board {
 		System.out.println(b.getCellAt(4));
 		System.out.println(b.getCellAt(5));*/
 		//System.out.println(b.getCellAt(320));
-		//System.out.println(b.adj.get(b.getCellAt(46)).toString());
+		System.out.println();
+		System.out.println(b.adj.get(b.getCellAt(4,2)));
 
 	}
 
